@@ -43,7 +43,7 @@ class TheaterService {
                             (row in 'C'..'M') && num !in 4..33 -> SEAT_TYPE_RESTRICTED
                             else -> SEAT_TYPE_STANDARD_SEAT
                         }
-                        list.add(Seat(row, num, seatType.price, seatType.description))
+                        list.add(Seat(0, row, num, seatType.price, seatType.description))
                     }
                 }
                 return list.toList()
