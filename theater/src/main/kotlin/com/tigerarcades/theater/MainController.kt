@@ -1,6 +1,7 @@
 package com.tigerarcades.theater
 
 import com.tigerarcades.theater.data.SeatRepository
+import com.tigerarcades.theater.services.BookingService
 import com.tigerarcades.theater.services.TheaterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -12,10 +13,13 @@ import org.springframework.web.servlet.ModelAndView
 class MainController {
 
     @Autowired
-    private lateinit var seatRepository: SeatRepository
+    private lateinit var bookingService: BookingService
 
     @Autowired
     private lateinit var theaterService: TheaterService
+
+    @Autowired
+    private lateinit var seatRepository: SeatRepository
 
     @RequestMapping("")
     fun homepage(): ModelAndView = ModelAndView(
@@ -29,7 +33,21 @@ class MainController {
         method = [RequestMethod.POST]
     )
     fun checkAvailability(bean: CheckAvailabilityBackingBean): ModelAndView {
-        return ModelAndView("seatBooking")
+        val selectedSeat = theaterService.find(bean.selectedSeatNum, bean.selectedSeatRow)
+        val result = bookingService.istSeatFree(selectedSeat)
+        bean.result = "Seat $selectedSeat is ${if (result) "free" else "booked"}"
+        return ModelAndView(
+            "seatBooking",
+            "bean",
+            bean
+        )
+    }
+
+    @RequestMapping(
+        "performance"
+    )
+    fun performances() {
+        return ModelAndView("performances")
     }
 
 /*
