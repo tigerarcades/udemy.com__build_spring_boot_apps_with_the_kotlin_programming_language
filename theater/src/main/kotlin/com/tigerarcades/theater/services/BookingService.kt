@@ -19,22 +19,23 @@ class BookingService {
 
 
     fun isSeatFree(seat: Seat, performance: Performance): Boolean {
-        return bookingRepository.findAll().none { it.seat == seat && it.performance == performance }
+        return findBooking(seat, performance) == null
     }
 
     fun findSeat(seatNum: Int, seatRow: Char): Seat? {
         return seatRepository.findAll().firstOrNull { it.num == seatNum && it.row == seatRow }
     }
 
-    fun reserveSeat(seat: Seat, performance: Performance, customerName: String):Booking {
-        val b = Booking(0, customerName)
-        b.performance = performance
-        b.seat = seat
-        bookingRepository.save(b)
-        return b
+    fun reserveSeat(seat: Seat, performance: Performance, customerName: String): Booking {
+        val booking = Booking(0, customerName)
+        booking.performance = performance
+        booking.seat = seat
+        bookingRepository.save(booking)
+        return booking
     }
 
-    fun findBooking(selectedSeat: Seat, selectedPerformance: Performance): Booking? {
-        return bookingRepository.findAll().first { it.seat == selectedSeat && it.performance == selectedPerformance }
+    fun findBooking(seat: Seat, performance: Performance): Booking? {
+        return bookingRepository.findAll()
+            .firstOrNull() { it.seat == seat && it.performance == performance }
     }
 }
