@@ -46,7 +46,7 @@ class MainController {
     @RequestMapping(
         "performance"
     )
-    fun performances() {
+    fun performances():ModelAndView {
         return ModelAndView("performances")
     }
 
