@@ -3,10 +3,13 @@ package com.tigerarcades.theater.domain
 import javax.persistence.*
 
 @Entity
-data class Performance(
+data class Booking(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) val id: Long,
-    val title: String
+    val customerName: String
 ) {
-    @OneToMany(mappedBy = "performance")
-    lateinit var bookings: MutableList<Booking>
+    @ManyToOne
+    lateinit var seat: Seat
+
+    @ManyToOne
+    lateinit var performance: Performance
 }
